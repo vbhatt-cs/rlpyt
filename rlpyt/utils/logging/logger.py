@@ -118,7 +118,8 @@ def hold_tabular_output(file_name):
 
 
 def set_snapshot_dir(dir_name):
-    os.system("mkdir -p %s" % dir_name)
+    # os.system("mkdir -p %s" % dir_name)
+    os.makedirs(dir_name, exist_ok=True)
     global _snapshot_dir
     _snapshot_dir = dir_name
 

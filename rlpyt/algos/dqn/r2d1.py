@@ -148,7 +148,7 @@ class R2D1(DQN):
             if self.input_priorities:
                 priorities = self.compute_input_priorities(samples)
                 samples_to_buffer = PrioritiesSamplesToBuffer(
-                    priorities=priorities, samples=samples)
+                    priorities=priorities, samples=samples_to_buffer)
             self.replay_buffer.append_samples(samples_to_buffer)
         opt_info = OptInfo(*([] for _ in range(len(OptInfo._fields))))
         if itr < self.min_itr_learn:
