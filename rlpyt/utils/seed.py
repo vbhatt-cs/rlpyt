@@ -2,7 +2,7 @@
 import numpy as np
 import time
 
-from rlpyt.utils.logging.console import colorize
+from rlpyt.utils.logging import logger
 
 seed_ = None
 
@@ -19,7 +19,7 @@ def set_seed(seed):
     import torch
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
-    print(colorize(f"using seed {seed}", "green"))
+    logger.log(f"using seed {seed}", color="green")
 
 
 def get_seed():
