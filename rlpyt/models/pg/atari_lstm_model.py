@@ -26,6 +26,7 @@ class AtariLstmModel(torch.nn.Module):
             kernel_sizes=None,
             strides=None,
             paddings=None,
+            normalize=True,
             ):
         """Instantiate neural net module according to inputs."""
         super().__init__()
@@ -41,6 +42,7 @@ class AtariLstmModel(torch.nn.Module):
         self.lstm = torch.nn.LSTM(self.conv.output_size + output_size + 1, lstm_size)
         self.pi = torch.nn.Linear(lstm_size, output_size)
         self.value = torch.nn.Linear(lstm_size, 1)
+        self.normalize = normalize
 
     def forward(self, image, prev_action, prev_reward, init_rnn_state):
         """
@@ -54,7 +56,8 @@ class AtariLstmModel(torch.nn.Module):
         next RNN state.
         """        
         img = image.type(torch.float)  # Expect torch.uint8 inputs
-        img = img.mul_(1. / 255)  # From [0-255] to [0-1], in place.
+        if self.normalize:
+            img = img.mul_(1. / 255)  # From [0-255] to [0-1], in place.
 
         # Infer (presence of) leading dimensions: [T,B], [B], or [].
         lead_dim, T, B, img_shape = infer_leading_dims(img, 3)
